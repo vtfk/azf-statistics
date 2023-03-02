@@ -212,7 +212,7 @@ module.exports = [
     },
     mapper: (stats) => {
       return stats.map(stat => {
-        let method = stat.tasks.find(t => t.method && t.method !== 'SyncElevmappe' && t.method !== 'archive')?.method
+        let method = stat.tasks.find(t => t.method && t.method.toLowerCase() !== 'syncelevmappe' && t.method !== 'dispatch' && t.method !== 'signOff' && t.method !== 'archive')?.method
         if (!method) method = stat.tasks.find(t => t.method)?.method
         const regarding = method ?? null
         return {
@@ -251,6 +251,36 @@ module.exports = [
           projectId: stat.projectId,
           regarding,
           ideMetode: `${stat.projectId} ${regarding}`
+        }
+      })
+    }
+  },
+  {
+    name: "masseutsendelse",
+    container: "masseutsendelse",
+    query: {
+      system: "masseutsendelse",
+      type: "masseutsendelse",
+      status: "completed"
+    },
+    projection: {
+      _id: 0,
+      system: 1,
+      type: 1,
+      projectId: 1,
+      "tasks.method": 1
+    },
+    mapper: (stats) => {
+      return stats.map(stat => {
+        const privatepersons = stat.tasks.filter(t => t.method === 'SyncPrivatePerson').length
+        const enterprises = stat.tasks.filter(t => t.method === 'SyncEnterprise').length
+        return {
+          system: stat.system,
+          type: stat.type,
+          projectId: stat.projectId,
+          privatepersons,
+          enterprises,
+          ideMetode: `${stat.projectId} masseutsendelse`
         }
       })
     }
