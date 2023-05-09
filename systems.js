@@ -1,46 +1,18 @@
 module.exports = [
   {
-    name: "smart-referat-publisering",
-    container: "smart-referat",
-    query: {
-      system: "smart",
-      type: "Møtereferat-publisering",
-      status: "completed"
-    },
-    projection: {
-      _id: 0,
-      system: 1,
-      type: 1,
-      projectId: 1,
-      "tasks.regarding": 1
-    },
-    mapper: (stats) => {
-      return stats.map(stat => {
-        const regarding = (stat.tasks.find(t => t.regarding))?.regarding ?? null
-        return {
-          system: stat.system,
-          type: stat.type,
-          projectId: stat.projectId,
-          regarding,
-          ideMetode: `${stat.projectId} ${regarding}`
-        }
-      })
-    }
-  },
-  {
-    name: "smart-referat-arkivering",
+    name: 'smart-referat-publisering',
     container: 'smart-referat',
     query: {
-      system: "smart",
-      type: "Møtereferat-arkivering",
-      status: "completed"
+      system: 'smart',
+      type: 'Møtereferat-publisering',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.regarding": 1
+      'tasks.regarding': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -56,19 +28,47 @@ module.exports = [
     }
   },
   {
-    name: "acos-skjema-arkivering",
-    container: "acos-skjema",
+    name: 'smart-referat-arkivering',
+    container: 'smart-referat',
     query: {
-      system: "AcosTo360",
-      type: "Arkivering",
-      status: "completed"
+      system: 'smart',
+      type: 'Møtereferat-arkivering',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.regarding': 1
+    },
+    mapper: (stats) => {
+      return stats.map(stat => {
+        const regarding = (stat.tasks.find(t => t.regarding))?.regarding ?? null
+        return {
+          system: stat.system,
+          type: stat.type,
+          projectId: stat.projectId,
+          regarding,
+          ideMetode: `${stat.projectId} ${regarding}`
+        }
+      })
+    }
+  },
+  {
+    name: 'acos-skjema-arkivering',
+    container: 'acos-skjema',
+    query: {
+      system: 'AcosTo360',
+      type: 'Arkivering',
+      status: 'completed'
+    },
+    projection: {
+      _id: 0,
+      system: 1,
+      type: 1,
+      projectId: 1,
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -84,19 +84,19 @@ module.exports = [
     }
   },
   {
-    name: "acos-skjema-til-sharepoint",
-    container: "acos-skjema",
+    name: 'acos-skjema-til-sharepoint',
+    container: 'acos-skjema',
     query: {
-      system: "AcosToTeams",
-      type: "Arkivering",
-      status: "completed"
+      system: 'AcosToTeams',
+      type: 'Arkivering',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -112,19 +112,19 @@ module.exports = [
     }
   },
   {
-    name: "IDM-onboarding",
-    container: "idm",
+    name: 'IDM-onboarding',
+    container: 'idm',
     query: {
-      system: "IDM",
-      type: "IDMOnBoarding",
-      status: "completed"
+      system: 'IDM',
+      type: 'IDMOnBoarding',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -140,19 +140,19 @@ module.exports = [
     }
   },
   {
-    name: "IDM-offboarding",
-    container: "idm",
+    name: 'IDM-offboarding',
+    container: 'idm',
     query: {
-      system: "IDM",
-      type: "IDMOffBoarding",
-      status: "completed"
+      system: 'IDM',
+      type: 'IDMOffBoarding',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -168,19 +168,19 @@ module.exports = [
     }
   },
   {
-    name: "arkivering-av-pc-kontrakter",
-    container: "digitroll",
+    name: 'arkivering-av-pc-kontrakter',
+    container: 'digitroll',
     query: {
-      system: "digitroll",
-      type: "Arkivering",
-      status: "completed"
+      system: 'digitroll',
+      type: 'Arkivering',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -196,19 +196,19 @@ module.exports = [
     }
   },
   {
-    name: "arkivering-av-vigo-elevdokumentasjon",
-    container: "vigo-elevdokumentasjon",
+    name: 'arkivering-av-vigo-elevdokumentasjon',
+    container: 'vigo-elevdokumentasjon',
     query: {
-      system: "vigo-isi",
-      type: "Arkivering",
-      status: "completed"
+      system: 'vigo-isi',
+      type: 'Arkivering',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -226,19 +226,19 @@ module.exports = [
     }
   },
   {
-    name: "vis-til-arkiv",
-    container: "vis-til-arkiv",
+    name: 'vis-til-arkiv',
+    container: 'vis-til-arkiv',
     query: {
-      system: "vis-til-arkiv",
-      type: "Arkivering",
-      status: "completed"
+      system: 'vis-til-arkiv',
+      type: 'Arkivering',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
@@ -256,19 +256,19 @@ module.exports = [
     }
   },
   {
-    name: "masseutsendelse",
-    container: "masseutsendelse",
+    name: 'masseutsendelse',
+    container: 'masseutsendelse',
     query: {
-      system: "masseutsendelse",
-      type: "masseutsendelse",
-      status: "completed"
+      system: 'masseutsendelse',
+      type: 'masseutsendelse',
+      status: 'completed'
     },
     projection: {
       _id: 0,
       system: 1,
       type: 1,
       projectId: 1,
-      "tasks.method": 1
+      'tasks.method': 1
     },
     mapper: (stats) => {
       return stats.map(stat => {
