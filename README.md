@@ -213,14 +213,15 @@ Returns
 ]
 ```
 
-## GET /Grafana?start=\${__from}&end=\${__to} or /Grafana/{system}?start=\${__from}&end=\${__to} 
-### GET /Grafana?start=\${__from}&end=\${__to}
+## GET `/Grafana?start=\${__from}&end=\${__to}` or `/Grafana/{system}?start=\${__from}&end=\${__to}` 
+
+`__from` and `__to` is generated ISO DateTime UTC stamps from Grafana
+
+### GET `/Grafana?start=\${__from}&end=\${__to}`
 
 Returns Grafana table stat for all systems in a timeframe
 
-`__from` and `__to` is generated datetime stamps from Grafana
-
-Example request `GET https://{statusurl}/api/Grafana?start=20250321T102000Z&end=20250321T102500Z`
+Example request `GET https://{statusurl}/api/Grafana?start=2025-03-21T10:20:00Z&end=2025-03-21T10:25:00Z`
 
 ```json
 [
@@ -235,13 +236,11 @@ Example request `GET https://{statusurl}/api/Grafana?start=20250321T102000Z&end=
 ]
 ```
 
-### GET /Grafana/{system}?start=\${__from}&end=\${__to}
+### GET `/Grafana/{system}?start=${__from}&end=${__to}`
 
 Returns Grafana stats for {system} in given timeframe
 
-`__from` and `__to` is generated datetime stamps from Grafana
-
-Example request `GET https://{statusurl}/api/Grafana?start=20250321T102000Z&end=20250321T102500Z`
+Example request `GET https://{statusurl}/api/Grafana?start=2025-03-21T10:20:00Z&end=2025-03-21T10:25:00Z`
 
 ```json
 [
