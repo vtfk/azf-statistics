@@ -8,8 +8,8 @@
     "test:verbose": "jest --verbose"
   },
   "dependencies": {
-    "@vtfk/logger": "^6.3.3",
-    "mongodb": "^6.3.0"
+    "@vtfk/logger": "^6.3.4",
+    "mongodb": "^6.18.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
