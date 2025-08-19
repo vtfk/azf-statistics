@@ -1,6 +1,6 @@
 {
   "name": "azf-statistics",
-  "version": "2.1.0",
+  "version": "2.1.1",
   "description": "",
   "scripts": {
     "start": "func start",
@@ -8,8 +8,8 @@
     "test:verbose": "jest --verbose"
   },
   "dependencies": {
-    "@vtfk/logger": "^6.3.3",
-    "mongodb": "^6.3.0"
+    "@vtfk/logger": "^6.3.4",
+    "mongodb": "^6.18.0"
   },
   "devDependencies": {
     "@types/jest": "^29.5.14",
