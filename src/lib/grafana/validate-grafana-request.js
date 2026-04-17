@@ -8,7 +8,7 @@ const getDate = (value) => {
   return new Date(Number.parseInt(value, 10))
 }
 
-module.exports = ({ start, end } = {}, _context) => {
+module.exports = ({ start, end } = {}) => {
   logger.logConfig({
     prefix: "azf-statistics - Grafana - Validate"
   })

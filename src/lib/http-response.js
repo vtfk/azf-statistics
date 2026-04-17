@@ -11,7 +11,7 @@ module.exports = (statusCode, data) => {
   if (statusCode === 200) {
     return {
       status: 200,
-      body: data
+      jsonBody: data
     }
   }
 
@@ -19,7 +19,7 @@ module.exports = (statusCode, data) => {
   const message = data.toString()
   return {
     status: statusCode,
-    body: {
+    jsonBody: {
       message,
       data: error
     }

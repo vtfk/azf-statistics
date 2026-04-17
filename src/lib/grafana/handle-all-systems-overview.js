@@ -2,7 +2,7 @@ const { logger } = require("@vestfoldfylke/loglady")
 const statDb = require("../stat-db")
 const httpResponse = require("../http-response")
 
-module.exports = async (_context, start, end) => {
+module.exports = async (start, end) => {
   logger.logConfig({
     prefix: "azf-statistics - Grafana - Systems overview"
   })

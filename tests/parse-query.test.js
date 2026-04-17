@@ -1,6 +1,6 @@
 const assert = require("node:assert")
 const { describe, test } = require("node:test")
-const { parseQueryFilter } = require("../lib/parse-query")
+const { parseQueryFilter } = require("../src/lib/parse-query")
 
 describe("ParseQueryFilter runs as expected when", () => {
   test("given a simple eq filter with one statement", () => {

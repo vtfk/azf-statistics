@@ -1,6 +1,6 @@
 const assert = require("node:assert")
 const { describe, test } = require("node:test")
-const { createStatistic } = require("../lib/create-statistic")
+const { createStatistic } = require("../src/lib/create-statistic")
 
 describe("Statistics object is handled correctly", () => {
   test("When all fields are provided", () => {

@@ -3,7 +3,7 @@ const statDb = require("../stat-db")
 const httpResponse = require("../http-response")
 const groupDocuments = require("./group-documents")
 
-module.exports = async (_context, system, start, end) => {
+module.exports = async (system, start, end) => {
   logger.logConfig({
     prefix: `azf-statistics - Grafana - ${system}`
   })
