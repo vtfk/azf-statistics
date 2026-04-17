@@ -1,59 +1,60 @@
-const statDb = require('../lib/stat-db')
-const httpResponse = require('../lib/http-response')
-const { createStatistic } = require('../lib/create-statistic')
-const { logger } = require('@vestfoldfylke/loglady')
-const { parseQueryFilter } = require('../lib/parse-query')
+const { logger } = require("@vestfoldfylke/loglady")
+const statDb = require("../lib/stat-db")
+const httpResponse = require("../lib/http-response")
+const { createStatistic } = require("../lib/create-statistic")
+const { parseQueryFilter } = require("../lib/parse-query")
 
-module.exports = async function (context, req) {
+module.exports = async (_context, req) => {
   logger.logConfig({
-    prefix: 'azf-statistics - Stat'
+    prefix: "azf-statistics - Stat"
   })
-  if (req.method.toUpperCase() === 'POST') {
+
+  if (req.method.toUpperCase() === "POST") {
     const { body } = req
-    if (!body) return httpResponse(400, 'Please provide a request body')
+    if (!body) return httpResponse(400, "Please provide a request body")
 
     const statsData = body
     // Check params as well
     const { system } = req.params
 
     if (system) {
-      logger.info('System is present in params, overriding system in statistics data (body)')
+      logger.info("System is present in params, overriding system in statistics data (body)")
       statsData.system = system
     }
 
     let stat
     try {
-      logger.info('Creating statistics object')
+      logger.info("Creating statistics object")
       stat = createStatistic(body)
-      logger.info('Created statistics object. System: {System}', stat.system)
+      logger.info("Created statistics object. System: {System}", stat.system)
     } catch (error) {
-      logger.errorException(error, 'Error creating statistics object')
+      logger.errorException(error, "Error creating statistics object")
       return httpResponse(400, error)
     }
     try {
       const db = await statDb()
       const collection = db.collection(stat.system)
-      logger.info('Uploading statistics object to MongoDB. System: {System}', stat.system)
+      logger.info("Uploading statistics object to MongoDB. System: {System}", stat.system)
       const res = await collection.insertOne(stat)
-      logger.info('Successfully uploaded statistics object to MongoDB. System: {System}', stat.system)
+      logger.info("Successfully uploaded statistics object to MongoDB. System: {System}", stat.system)
       return httpResponse(200, res)
     } catch (error) {
-      logger.errorException(error, 'Error uploading statistics object to MongoDB. System: {System}', stat.system)
+      logger.errorException(error, "Error uploading statistics object to MongoDB. System: {System}", stat.system)
       return httpResponse(500, error)
     }
   }
 
-  if (req.method.toUpperCase() === 'GET') {
+  if (req.method.toUpperCase() === "GET") {
     const { system } = req.params
-    if (!system) return httpResponse(400, 'Please provide a system name')
-    logger.info('Fetching statistics for system {System}', system)
-    logger.info('First fetching collections/system names to see that the collection/system exists')
+    if (!system) return httpResponse(400, "Please provide a system name")
+    logger.info("Fetching statistics for system {System}", system)
+    logger.info("First fetching collections/system names to see that the collection/system exists")
     try {
       const db = await statDb()
       const collections = await db.listCollections().toArray()
-      logger.info('Successfully fetched collections/system names - Length: {CollectionLength}. Mapping to only collection names', collections.length)
+      logger.info("Successfully fetched collections/system names - Length: {CollectionLength}. Mapping to only collection names", collections.length)
       const collectionNames = collections.map((collection) => collection.name)
-      logger.info('Successfully mapped collections to only collection names - Length: {CollectionNameLength}', collectionNames.length)
+      logger.info("Successfully mapped collections to only collection names - Length: {CollectionNameLength}", collectionNames.length)
       if (!collectionNames.includes(system)) {
         logger.error('System "{System}" not found in collections', system)
         return httpResponse(404, `System "${system}" not found`)
@@ -83,20 +84,27 @@ module.exports = async function (context, req) {
         type: 1
       }
       if (select) {
-        if (select.trim() === 'all') { // Cannot use * due to azure waf (web application firewall)
+        if (select.trim() === "all") {
+          // Cannot use * due to azure waf (web application firewall)
           projection = {}
         } else {
-          projection = select.split(',').reduce((acc, prop) => {
+          projection = select.split(",").reduce((acc, prop) => {
             acc[prop.trim()] = 1
             return acc
           }, {})
         }
       }
-      const stats = count === 'true' ? await collection.countDocuments(queryFilter) : await collection.find(queryFilter).project(projection).toArray()
-      logger.info('Successfully fetched all documents for system "{System}" - Length: {StatLength}. count: {Count}. select: {Select}', system, stats.length || stats, count === 'true', select || 'default')
+      const stats = count === "true" ? await collection.countDocuments(queryFilter) : await collection.find(queryFilter).project(projection).toArray()
+      logger.info(
+        'Successfully fetched all documents for system "{System}" - Length: {StatLength}. count: {Count}. select: {Select}',
+        system,
+        stats.length || stats,
+        count === "true",
+        select || "default"
+      )
       return httpResponse(200, stats)
     } catch (error) {
-      logger.errorException(error, 'Error fetching stats for system')
+      logger.errorException(error, "Error fetching stats for system")
       return httpResponse(500, error)
     }
   }

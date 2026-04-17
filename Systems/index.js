@@ -1,22 +1,25 @@
-const { logger } = require('@vestfoldfylke/loglady')
-const httpResponse = require('../lib/http-response')
-const statDb = require('../lib/stat-db')
+const { logger } = require("@vestfoldfylke/loglady")
+const httpResponse = require("../lib/http-response")
+const statDb = require("../lib/stat-db")
 
-module.exports = async function (context, req) {
+module.exports = async (_context, _req) => {
   logger.logConfig({
-    prefix: 'azf-statistics - Systems'
+    prefix: "azf-statistics - Systems"
   })
 
   try {
-    logger.info('Fetching collections/system names')
+    logger.info("Fetching collections/system names")
     const db = await statDb()
+
     const collections = await db.listCollections().toArray()
-    logger.info('Successfully fetched collections/system names - Length: {CollectionLength}. Mapping to only collection names', collections.length)
+    logger.info("Successfully fetched collections/system names - Length: {CollectionLength}. Mapping to only collection names", collections.length)
+
     const collectionNames = collections.map((collection) => collection.name)
-    logger.info('Successfully mapped collections to only collection names - Length: {CollectionNameLength}', collectionNames.length)
+    logger.info("Successfully mapped collections to only collection names - Length: {CollectionNameLength}", collectionNames.length)
+
     return httpResponse(200, collectionNames)
   } catch (error) {
-    logger.errorException(error, 'Error fetching collections/system names')
+    logger.errorException(error, "Error fetching collections/system names")
     return httpResponse(500, error)
   }
 }

@@ -1,12 +1,12 @@
-const handleAllSystemsOverview = require('../lib/grafana/handle-all-systems-overview')
-const handleAllSystemsStatistics = require('../lib/grafana/handle-all-systems-statistics')
-const handleSystem = require('../lib/grafana/handle-system')
-const httpResponse = require('../lib/http-response')
-const validation = require('../lib/grafana/validate-grafana-request')
+const handleAllSystemsOverview = require("../lib/grafana/handle-all-systems-overview")
+const handleAllSystemsStatistics = require("../lib/grafana/handle-all-systems-statistics")
+const handleSystem = require("../lib/grafana/handle-system")
+const httpResponse = require("../lib/http-response")
+const validation = require("../lib/grafana/validate-grafana-request")
 
-const allSystem = 'all'
+const allSystem = "all"
 
-module.exports = async function (context, req) {
+module.exports = async (context, req) => {
   const { system } = req.params
 
   const { result, message, start, end } = validation(req.query, context)

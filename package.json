@@ -4,7 +4,8 @@
   "description": "",
   "scripts": {
     "start": "func start",
-    "test": "standard && jest",
+    "test": "biome check && jest",
+    "lint:fix": "biome check --write",
     "test:verbose": "jest --verbose"
   },
   "dependencies": {
@@ -12,13 +13,8 @@
     "mongodb": "^7.1.1"
   },
   "devDependencies": {
+    "@biomejs/biome": "2.4.12",
     "@types/jest": "^30.0.0",
-    "jest": "^30.3.0",
-    "standard": "^17.1.2"
-  },
-  "standard": {
-    "env": [
-      "jest"
-    ]
+    "jest": "^30.3.0"
   }
 }
