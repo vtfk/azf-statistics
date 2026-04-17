@@ -11,9 +11,12 @@ module.exports = async (_context, req) => {
 
   if (req.method.toUpperCase() === "POST") {
     const { body } = req
-    if (!body) return httpResponse(400, "Please provide a request body")
+    if (!body) {
+      return httpResponse(400, "Please provide a request body")
+    }
 
     const statsData = body
+
     // Check params as well
     const { system } = req.params
 
@@ -31,6 +34,7 @@ module.exports = async (_context, req) => {
       logger.errorException(error, "Error creating statistics object")
       return httpResponse(400, error)
     }
+
     try {
       const db = await statDb()
       const collection = db.collection(stat.system)
@@ -46,19 +50,25 @@ module.exports = async (_context, req) => {
 
   if (req.method.toUpperCase() === "GET") {
     const { system } = req.params
-    if (!system) return httpResponse(400, "Please provide a system name")
+    if (!system) {
+      return httpResponse(400, "Please provide a system name")
+    }
+
     logger.info("Fetching statistics for system {System}", system)
     logger.info("First fetching collections/system names to see that the collection/system exists")
+
     try {
       const db = await statDb()
       const collections = await db.listCollections().toArray()
       logger.info("Successfully fetched collections/system names - Length: {CollectionLength}. Mapping to only collection names", collections.length)
       const collectionNames = collections.map((collection) => collection.name)
       logger.info("Successfully mapped collections to only collection names - Length: {CollectionNameLength}", collectionNames.length)
+
       if (!collectionNames.includes(system)) {
         logger.error('System "{System}" not found in collections', system)
         return httpResponse(404, `System "${system}" not found`)
       }
+
       logger.info('System "{System}" found in collections - fetching all documents for system', system)
       const collection = db.collection(system)
 
@@ -69,6 +79,7 @@ module.exports = async (_context, req) => {
       if (filter) {
         queryFilter = parseQueryFilter(filter) // welcome to the rabbit hole
       }
+
       // Default projection
       let projection = {
         _id: 1,
@@ -83,6 +94,7 @@ module.exports = async (_context, req) => {
         externalId: 1,
         type: 1
       }
+
       if (select) {
         if (select.trim() === "all") {
           // Cannot use * due to azure waf (web application firewall)
@@ -94,7 +106,9 @@ module.exports = async (_context, req) => {
           }, {})
         }
       }
+
       const stats = count === "true" ? await collection.countDocuments(queryFilter) : await collection.find(queryFilter).project(projection).toArray()
+
       logger.info(
         'Successfully fetched all documents for system "{System}" - Length: {StatLength}. count: {Count}. select: {Select}',
         system,
@@ -102,6 +116,7 @@ module.exports = async (_context, req) => {
         count === "true",
         select || "default"
       )
+
       return httpResponse(200, stats)
     } catch (error) {
       logger.errorException(error, "Error fetching stats for system")
