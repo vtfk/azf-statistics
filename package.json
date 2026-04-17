@@ -4,17 +4,14 @@
   "description": "",
   "scripts": {
     "start": "func start",
-    "test": "biome check && jest",
-    "lint:fix": "biome check --write",
-    "test:verbose": "jest --verbose"
+    "test": "biome check && node --test tests/**/*.test.js",
+    "lint:fix": "biome check --write"
   },
   "dependencies": {
     "@vestfoldfylke/loglady": "^1.5.3",
     "mongodb": "^7.1.1"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.4.12",
-    "@types/jest": "^30.0.0",
-    "jest": "^30.3.0"
+    "@biomejs/biome": "2.4.12"
   }
 }
